@@ -67,6 +67,7 @@ const double RadxEvad::pseudoEarthDiamKm = 17066.0;
 // pyart.retrieve.vad_michelson(radar, vel_field=None, z_want=None, gatefilter=None)[source]
 // wradlib ?? ask Kai
 
+/*
 return flat-structure-of-information RadxEvad(radarVolumeDataModel??, or flat-structure-information??, params)
 What information is needed from the radar volumne?
 If this approach, then I need to change more code, ???
@@ -84,6 +85,12 @@ VEL.ray[n][gate0 ... gateN]
 
 How to distinguish which rays are in which sweep?  
    How are the data stored in the xradar.DataTree?  Use this layout to pass the data.
+   pass array of indexes into the rays, for the first ray and last ray of a sweep; pass as a list of tuples?  or just a list, where i mod 1 == 0 ==> first ray, 
+                           i mod 1 == 1 ==> last ray
+
+rays:  pointer to list of VEL data continuous like this ...
+ray[0][gate0 ... gateN]
+ray[n][gate0 ... gateN]
 
 Data Access:
    Access the raw data using da.data or da.values (which returns a numpy.ndarray).
@@ -94,10 +101,37 @@ Memory Continuity:
 Data Type Matching:
    Ensure the xarray dtype matches the ctypes type (e.g., float64 to ctypes.c_double)
 
-
-
 If radar-volume-data-model, then I need to convert xradar to RadxVol structure, using ctypes.
-RadxEvad(int argc, char **argv)
+
+*/
+
+
+RadxEvad(
+  const float *sweep_indexes, 
+  const float *rays, 
+ // sweeps, and rays:  pass by reference, i.e. pointer (ctypes::byref() which is faster than pointer()) pass as an xarray.DataArray 
+  size_t _nGates,
+  float _radxStartRange,
+  float _radxGateSpacing,
+  // _radarName,
+  float _radarLatitude,
+  float _radarLongitude,
+  float _radarAltitude,
+// ----  tunable parameters ----
+  float min_range,
+  float max_range,
+  float delta_range,
+  bool range_gate_geom_equal,
+  float _radxStartRange,
+  float _radxGateSpacing,
+  float min_elev,
+  float max_elev,
+  size_t _nRanges,
+  // _ring,
+  bool compute_profile_spacing_from_data,
+  bool debug)
+
+// RadxEvad(int argc, char **argv)
   
 {
 
@@ -199,7 +233,7 @@ RadxEvad(int argc, char **argv)
 // process this data set
 
 // ****** this is the main entry point *****
-int RadxEvad::_processDataSet(_readVol, 
+int RadxEvad::_processDataSet( // _readVol, 
   _nGates,
   _radxStartRange,
   _radxGateSpacing,
@@ -232,9 +266,6 @@ Data Type Matching:
   _nRanges,
   _ring,
   compute_profile_spacing_from_data,
- 
-
-
   debug,
   )
   
@@ -471,7 +502,7 @@ int RadxEvad::_computeSolutionForRing(int isweep, double elev, int irange)  // T
 
   double cosElev = cos(elev * DEG_TO_RAD);
   const RadxSweep *sweep = _readVol.getSweeps()[isweep];   <<======
-  const vector<RadxRay *> &rays = _readVol.getRays();      <<======
+  const vector<RadxRay *> &rays = _readVol.getRays();      <<======  All the rays (sweep keeps indexes into the rays list for the start and end of each sweep; each ray has data for all the ranges)
   int ngood = 0;
 
   for (size_t iray = sweep->getStartRayIndex();
@@ -497,7 +528,7 @@ int RadxEvad::_computeSolutionForRing(int isweep, double elev, int irange)  // T
 
     // get field pointers
 
-    const RadxField *velFld = ray->getField(_params_VEL_field_name);
+    const RadxField *velFld = ray->getField(_params_VEL_field_name);  <<=====
     if (velFld == NULL) {
       if (_params_debug >= Params::DEBUG_VERBOSE) {
         cerr << "WARNING - RadxEvad::_computeSolutionForRing()" << endl;
@@ -507,7 +538,7 @@ int RadxEvad::_computeSolutionForRing(int isweep, double elev, int irange)  // T
       continue;
     }
     ngood++;
-    const Radx::fl32 *velArray = velFld->getDataFl32();
+    const Radx::fl32 *velArray = velFld->getDataFl32();   <<<====
     Radx::fl32 velMiss = velFld->getMissingFl32();
     double rayNyquist = ray->getNyquistMps();
     if (!_params_set_nyquist_velocity) {
