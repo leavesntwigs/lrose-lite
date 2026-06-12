@@ -106,8 +106,8 @@ If radar-volume-data-model, then I need to convert xradar to RadxVol structure, 
 */
 
 
-RadxEvad(
-  const float *sweep_indexes, 
+void RadxEvad (
+  const float *sweep_index, 
   const float *rays, 
  // sweeps, and rays:  pass by reference, i.e. pointer (ctypes::byref() which is faster than pointer()) pass as an xarray.DataArray 
   size_t _nGates,
@@ -117,6 +117,14 @@ RadxEvad(
   float _radarLatitude,
   float _radarLongitude,
   float _radarAltitude,
+
+// --- output arguments, values returned ---
+  float *ht, 
+  float *uu, 
+  float *vv, 
+  float *ww, 
+  float *div,
+
 // ----  tunable parameters ----
   float min_range,
   float max_range,

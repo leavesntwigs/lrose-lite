@@ -1,0 +1,59 @@
+
+Step 1:
+  write simple function to test data passing back and forth
+*** Use extern "C" to prevent name mangling
+*** Use byref() instead of pointer() because it is faster and we don't need the pointer in python.
+
+*** passing arrays ...
+Not needed yet:     use Ammar's conversions.py to convert Python list to ctypes array
+??     numpy dataarray? to c_types ???
+??     xarray.DataTree to c_types ???
+just used the simple example from ctypes (no need for POINTERS or byref() in C library, just use "const *float", or "*float"):
+from ctypes import *
+TenIntegers = c_int * 10
+ii = TenIntegers(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+print(ii)
+for i in ii: print(i, end=" ")
+
+
+extern "C" 
+{
+  TestDataPassing(
+    const float *sweepIndex, 
+    const float *rays, 
+    size_t nGates,
+    float *ht,
+    float *uu,
+    );
+}
+    print... or take avg, whatever and return something. 
+
+    TestDataPassing.cc  ==> libRadxlite.so
+    TestDataPassing.py ==> TestDataPassing(...)
+
+Linux:    $ g++ -dynamiclib TestDataPassing.cc -o TestDataPassing.so
+MacOS:    $ g++ -dynamiclib TestDataPassing.cc -o TestDataPassing.dylib
+Windows:  ??  $ g++ -dynamiclib TestDataPassing.cc -o TestDataPassing.dylib
+
+Step 2:
+    create binding and compile
+    try TestDataPassing calling libRadx, or some other LROSE lib?
+    test packaging 
+
+Step 3:
+    test import and use
+
+>>> from ctypes import *
+>>> cdll.LoadLibrary("TestDataPassing.dylib")
+>>> lroselib = CDLL("TestDataPassing.dylib")
+>>> lroselib.RadxEvad
+<_FuncPtr object at 0x102938b80>
+
+>>> i = c_int()
+>>> lroselib.RadxEvad(byref(i))
+43960968
+>>> i
+c_int(47)  <<== 47 was set in the RadxEvad function!
+
+
+So, to pass an array by reference, then we need c_???
