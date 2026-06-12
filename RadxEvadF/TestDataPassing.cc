@@ -1,4 +1,15 @@
 
+
+#include <toolsa/pmu.h>
+#include <toolsa/toolsa_macros.h>
+#include <toolsa/sincos.h>
+#include <toolsa/TaArray.hh>
+#include <toolsa/Path.hh>
+#include <toolsa/file_io.h>
+#include <rapmath/RapComplex.hh>
+#include <physics/IcaoStdAtmos.hh>
+#include <physics/thermo.h>
+
 //using namespace std;
 
 extern "C" 

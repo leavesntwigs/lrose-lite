@@ -15,6 +15,33 @@ ii = TenIntegers(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 print(ii)
 for i in ii: print(i, end=" ")
 
+----
+this works ...
+>>> j = c_int(33)
+>>> j
+c_int(33)
+>>> myarr = c_float * 5
+>>> ii = myarr(1,2,3,4,5)
+>>> ii
+<__main__.c_float_Array_5 object at 0x1059797c0>
+>>> jj = myarr(0,0,0,0,0)
+>>> jj
+<__main__.c_float_Array_5 object at 0x105979e00>
+>>> lroselib.RadxEvad(ii, nGates, jj))
+  File "<python-input-29>", line 1
+    lroselib.RadxEvad(ii, nGates, jj))
+                                     ^
+SyntaxError: unmatched ')'
+>>> lroselib.RadxEvad(ii, nGates, jj)
+45210384
+>>> for j in jj: print(j, end=" ")
+... 
+4.0 4.0 4.0 0.0 0.0 >>> 
+>>> 
+>>> nGates
+4
+----------
+
 
 extern "C" 
 {
@@ -35,9 +62,27 @@ Linux:    $ g++ -dynamiclib TestDataPassing.cc -o TestDataPassing.so
 MacOS:    $ g++ -dynamiclib TestDataPassing.cc -o TestDataPassing.dylib
 Windows:  ??  $ g++ -dynamiclib TestDataPassing.cc -o TestDataPassing.dylib
 
+MacOS:    $ g++ -dynamiclib -I../lrose/include TestDataPassing.cc -o TestDataPassing.dylib
+
+Use -l: instead of -l. For example -l:libXYZ.a to link with libXYZ.a. Notice the lib and .a are written out, as opposed to -lXYZ which would auto-expand to libXYZ.so/libXYZ.a.
+
+(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib -I./include RadxEvad.cc ./lib/libtoolsa.a  -o lroselite.dylib
+
+
 Step 2:
     create binding and compile
     try TestDataPassing calling libRadx, or some other LROSE lib?
+
+----
+>>> cdll.LoadLibrary("lroselite.dylib")
+<CDLL 'lroselite.dylib', handle 760e4eb0 at 0x1058fefd0>
+>>> lroselite = CDLL("lroselite.dylib")
+>>> lroselite.RadxEvad
+<_FuncPtr object at 0x105998790>
+>>> lroselite.RadxEvad(ii, ii, nGates, jj, jj, jj, jj, jj)
+34619536
+------
+
     test packaging 
 
 Step 3:
