@@ -1,3 +1,6 @@
+RadxConvert-lite:
+  xradar:DataTree = RadxConvert(filename, URL) ...
+
 
 Step 1:
   write simple function to test data passing back and forth
@@ -102,3 +105,129 @@ c_int(47)  <<== 47 was set in the RadxEvad function!
 
 
 So, to pass an array by reference, then we need c_???
+
+
+-----
+
+xarray.Dataset/DataTree ==> base types ==> RadxEvad-lite
+
+use SPOL GDEX example ...
+
+xarray.DataArray.astype(dtype, ... order='C', ...)
+
+mamba create -n faas zarr xarray xradar requests aiohttp
+
+>>> hpc_url_horizontal_scan = "https://boreas.hpc.ucar.edu:6443/gdex-data/d694517/v2.0_zarr/cfrad.20220525_030910.927_to_2022052\
+5_031137.777_SPOL_PrecipSur2_SUR.zarr"
+>>> import xarray as xr
+... dt_horizontal = xr.open_datatree(hpc_url_horizontal_scan, engine="zarr", decode_timedelta=False)
+... 
+>>> dt_horizontal
+>>> ds_horizontal_sweep0 = dt_horizontal["sweep_0"].to_dataset()
+
+How to get VEL for all sweeps?
+
+# It is just a demonstration, you can ignore the logic
+def filter_radar(ds):
+    ds = ds.assign(
+        VEL=ds.["VEL"]
+    )
+    return ds
+
+# Apply the function across all sweeps
+VEL_dtree = dt_horizontal.xradar.map_over_sweeps(filter_radar)
+
+
+>>> dt_horizontal["/sweep_0"]["VEL"].data
+array([[-0.11261564, -1.7540228 , -1.2277151 , ...,         nan,
+                nan,         nan],
+       [-0.04292193, -2.3776615 , -0.9921984 , ...,         nan,
+                nan,         nan],
+       [ 0.0736348 , -2.0808623 , -1.7480147 , ...,         nan,
+                nan,         nan],
+       ...,
+       [-0.05373647, -1.8862005 , -1.2277151 , ...,         nan,
+                nan,         nan],
+       [ 0.25868365, -2.0688462 , -1.3418686 , ...,         nan,
+                nan,         nan],
+       [-0.13905118, -1.6747161 , -0.9213031 , ...,         nan,
+                nan,         nan]], shape=(480, 1999), dtype=float32)
+
+Can I send this??? 
+sweeps[0] = 0
+sweeps[1] = 480 ???
+
+yes, ...
+
+>>> rays = dt_horizontal["/sweep_0"]["VEL"].data
+>>> rays
+array([[-0.11261564, -1.7540228 , -1.2277151 , ...,         nan,
+                nan,         nan],
+       [-0.04292193, -2.3776615 , -0.9921984 , ...,         nan,
+                nan,         nan],
+       [ 0.0736348 , -2.0808623 , -1.7480147 , ...,         nan,
+                nan,         nan],
+       ...,
+       [-0.05373647, -1.8862005 , -1.2277151 , ...,         nan,
+                nan,         nan],
+       [ 0.25868365, -2.0688462 , -1.3418686 , ...,         nan,
+                nan,         nan],
+       [-0.13905118, -1.6747161 , -0.9213031 , ...,         nan,
+                nan,         nan]], shape=(480, 1999), dtype=float32)
+>>> rays[0]
+array([-0.11261564, -1.7540228 , -1.2277151 , ...,         nan,
+               nan,         nan], shape=(1999,), dtype=float32)
+>>> rays[1]
+array([-0.04292193, -2.3776615 , -0.9921984 , ...,         nan,
+               nan,         nan], shape=(1999,), dtype=float32)
+
+Now, add the rays from the next sweep ...
+>>> import numpy as np
+>>> np.append(rays, dt_horizontal["/sweep_1"]["VEL"].data, axis=0)
+array([[-0.11261564, -1.7540228 , -1.2277151 , ...,         nan,
+                nan,         nan],
+       [-0.04292193, -2.3776615 , -0.9921984 , ...,         nan,
+                nan,         nan],
+       [ 0.0736348 , -2.0808623 , -1.7480147 , ...,         nan,
+                nan,         nan],
+       ...,
+       [-0.3529388 , -2.509839  , -1.7840632 , ...,         nan,
+                nan,         nan],
+       [ 0.15774791, -2.2142417 , -1.0510776 , ...,         nan,
+                nan,         nan],
+       [-0.25200307, -1.8621682 , -1.1580213 , ...,         nan,
+                nan,         nan]], shape=(960, 1999), dtype=float32)
+
+
+
+def extract_rays(ds):
+    ds = ds.assign(
+        VEL=ds.["VEL"]
+    )
+    return ds
+
+
+rays = np.empty([480,1999], dtype=np.float64)
+
+>>> rays2 = np.empty([480,1999], dtype=np.float64)
+>>> for group in dt_horizontal.match("/sweep_*"):
+...     print(f"Node Name: {group}")
+...     np.append(rays2, dt_horizontal[group]["VEL"].data, axis=0)
+...  
+
+Instead of appending rows, allocate a suitably sized array, and then assign to it row-by-row:
+
+>>> isweep = 0
+>>> a = np.empty([nsweeps*nrays,ngates])
+>>> for group in dt_horizontal.match("/sweep_*"):
+...     print(f"Node Name: {group}")
+...     a[isweep*nrays:isweep*nrays+nrays] = dt_horizontal[group]["VEL"].data
+...     isweep += 1
+...     
+Node Name: sweep_0
+Node Name: sweep_1
+Node Name: sweep_2
+Node Name: sweep_3
+
+TODO: need to handle sweeps with varying # of rays.
+TODO: send this array of rays: "a" to RadxEvad and see if it is useful.
