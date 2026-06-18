@@ -229,5 +229,13 @@ Node Name: sweep_1
 Node Name: sweep_2
 Node Name: sweep_3
 
+
+$ g++ -dynamiclib -I./include RadxEvad.cc ./lib/libtoolsa.a  -o lroselite.dylib
+
+
 TODO: need to handle sweeps with varying # of rays.
 TODO: send this array of rays: "a" to RadxEvad and see if it is useful.
+
+NEXT apps to convert ...
+Radx2Grid, RadxConvert, RadxPrint 
+

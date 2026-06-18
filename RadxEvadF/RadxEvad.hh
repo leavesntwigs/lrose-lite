@@ -254,47 +254,49 @@
 
   // methods
   
-//  int _runFilelist();
-//  int _runArchive();
-//  int _runRealtime();
-//  void _setupRead(RadxFile &file);
-//  int _processFile(const string &filePath);
+  //int _runFilelist();
+  //int _runArchive();
+  //int _runRealtime();
+  //void _setupRead(RadxFile &file);
+  //int _processFile(const string &filePath);
 
-//  int _processDataSet();
+  // int _processDataSet();
 
-  int _computeSolutionForRing(int isweep, double elev, int irange);
-  void _computeMeanVel(AzSlice &slice);
-  void _computeMedianVel(int sliceNum);
-  void _copyMedianIntoGaps();
-
-  void _identifyFolds();
-  int _unfoldFromZeroIsodop(int zeroIsodopIndex);
-  int _unfoldIteratively();
-  void _unfoldFromPreviousRing(double ht);
-
-  void _computeWindForRing();
-
-  void _loadProfile();
-
-  void _computeDivergence();
-  void _interpDivergence();
-
-  void _computeVertVel(double wtop);
-  void _computeFf(double az, double *ff);
-  void _invertAA();
-  void _invertPP();
-  void _invertMatrix(double *data, int nn) const;
-
-  void _printResultsForRing(ostream &out, const VelRing &ring);
-
-//  int _writeNetcdfOutput();
-//  int _writeSpdbOutput();
-
+//  int computeSolutionForRing = [&](size_t isweep, double elev, const float *velArray, const size_t nrays,
+//     size_t nGates, const float *azs, const float nyquist);
+//
+//  void _computeMeanVel(AzSlice &slice);
+//  void _computeMedianVel(int sliceNum);
+//  void _copyMedianIntoGaps();
+//
+//  void _identifyFolds();
+//  int _unfoldFromZeroIsodop(int zeroIsodopIndex);
+//  int _unfoldIteratively();
+//  void _unfoldFromPreviousRing(double ht);
+//
+//  void _computeWindForRing();
+//
+//  void _loadProfile();
+//
+//  void _computeDivergence();
+//  void _interpDivergence();
+//
+//  void _computeVertVel(double wtop);
+//  void _computeFf(double az, double *ff);
+//  void _invertAA();
+//  void _invertPP();
+//  void _invertMatrix(double *data, int nn);
+//
+//  void _printResultsForRing(ostream &out, const VelRing &ring);
+//
+//  //int _writeNetcdfOutput();
+//  //int _writeSpdbOutput();
+//
 //  int _getNValidLevels();
+//
+//  double _norm(double **a,int n);
+//  int _doubleCompare(const void *i, const void *j);
 
-//  static double _norm(double **a,int n);
-//  static int _doubleCompare(const void *i, const void *j);
-
-//  void _writeLdataInfo(const string &outputPath);
+  // void _writeLdataInfo(const string &outputPath);
 
 #endif
