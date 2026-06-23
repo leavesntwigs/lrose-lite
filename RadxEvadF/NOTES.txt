@@ -238,4 +238,146 @@ TODO: send this array of rays: "a" to RadxEvad and see if it is useful.
 
 NEXT apps to convert ...
 Radx2Grid, RadxConvert, RadxPrint 
+Q: What does RadxConvert look like in an interoperable Jupyter/Python environment? and how does it interact with xradar?
 
+
+********
+
+Need to get all the arguments to RadxEvad in order ...
+   void RadxEvad (
+     const float *sweep_index,
+     const size_t nsweeps,
+     const float *rays,
+     const size_t nrays,
+     const float *elevs, // elevation for each sweep
+     const float *azs,   // azimuth for each ray
+    // sweeps, and rays:  pass by reference, i.e. pointer (ctypes::byref() which is faster than pointer()) pass as an xarray.DataArray
+     size_t  nGates,
+     float startRangeKm,
+     float gateSpacingKm,
+     float radarLatitudeDeg,
+     float radarLongitudeDeg,
+     float _radarAltitude,
+     float nyquist,
+   // --- output arguments, values returned ---
+   // Q: What are the dimensions of these???  int nZ = _getNValidLevels();
+   // A: depends on the elevation angles; default is the elevation angles, but provide arguments to override.
+     float *ht,
+     float *uu,
+     float *vv,
+     float *ww,
+     float *div
+
+
+Focus on PROOF OF CONCEPT !!! then tweak the parameters
+
+sweep_index =  // need indexes into rays of the start of each sweep
+>>> isweep = 0
+>>> sweep_index = np.empty([nsweeps])
+    a = np.empty([nsweeps*nrays,ngates])
+    elevs = np.empty ?? or c_float ?? (nsweeps * c_float) 
+>>> for group in dt_horizontal.match("/sweep_*"):
+        sweep0ds = dt_horizontal['/sweep_0'].to_dataset()
+...     print(f"Node Name: {group}")
+...     a[isweep*nrays:isweep*nrays+nrays] = dt_horizontal[group]["VEL"].data
+        if (isweep > 0):
+            sweep_index[isweep] = sweep_index[isweep-1] + dt_horizontal[group].azimuth.size
+        elevs[isweep] = dt_horizontal[group].elevation??
+...     isweep += 1
+
+
+nsweeps = dt_horizontal.dims['sweep']
+rays = a  // need a flat structure of all the rays
+nrays = dt_horizontal['/sweep_0'].dims['azimuth'] * nsweeps? // nrays is total size of all rays * all gates?
+
+azs = dt_horizontal['/sweep_0'].azimuth.data
+
+myarr = c_float * nsweeps // uu,vv are calculated for each elevation and one elevation per sweep 
+ht = myarr(0.0) // initialize to all zeros
+uu = myarr(0.0) // initialize to all zeros
+vv = myarr(0.0) // initialize to all zeros
+ww = myarr(0.0) // initialize to all zeros
+div = myarr(0.0) // initialize to all zeros
+
+
+consider ...
+import ctypes
+import numpy
+c_float_p = ctypes.POINTER(ctypes.c_float)
+data = numpy.array([[0.1, 0.1], [0.2, 0.2], [0.3, 0.3]])
+data = data.astype(numpy.float32)
+data_p = data.ctypes.data_as(c_float_p)
+
+Hmmm,
+
+How to convert rays to ctypes.c_float ?
+I can get a ctypes.POINTER to rays using numpy.array.ctypes.data_as(ctypes.POINTER(ctypes.c_float32??))
+Then I need to change RadxEvad.cc to work with POINTERS
+Probably need to dereference the pointer in the C code.
+
+
+import ctypes
+import numpy as np
+
+cdll.LoadLibrary("TestDataPassing.dylib")
+lroselib = CDLL("TestDataPassing.dylib")
+
+
+x = np.array([12.0, 13.0, 11.0, 1.0])
+y = np.array([1.0, 1.0, 1.0, 1.0])
+
+c_float_p = ctypes.POINTER(ctypes.c_float)
+data = numpy.array([[0.1, 0.1], [0.2, 0.2], [0.3, 0.3]])
+data = data.astype(numpy.float32)
+data_p = data.ctypes.data_as(c_float_p)
+
+
+----
+
+
+This worked!!!
+
+import ctypes 
+import numpy as np
+
+# load the library ... 
+cdll.LoadLibrary("TestDataPassing.dylib")
+lroselib = CDLL("TestDataPassing.dylib")
+
+# set the in and out arrays ...
+>>> x
+array([12., 13., 11.,  1.])
+>>> y = np.array([1.0, 1.0, 1.0, 1.0])
+>>> y
+array([1., 1., 1., 1.])
+>>> x
+array([12., 13., 11.,  1.])
+
+# create a pointer type ...
+>>> c_float_p = ctypes.POINTER(ctypes.c_float)
+
+# make sure the in and out arrays are of the correct type ...
+>>> x
+array([12., 13., 11.,  1.])
+>>> x = x.astype(np.float32)
+>>> y = y.astype(np.float32)
+>>> x
+array([12., 13., 11.,  1.], dtype=float32)
+>>> y
+array([1., 1., 1., 1.], dtype=float32)
+
+# call the C++ library ...
+>>> lroselib.RadxEvad(x.ctypes.data_as(c_float_p), c_size_t(4), y.ctypes.data_as(c_float_p))
+55625936
+
+# notice the changed output array ...
+>>> y
+array([4., 4., 4., 1.], dtype=float32)
+>>> x
+array([12., 13., 11.,  1.], dtype=float32)
+>>> 
+
+
+
+ lroselib.RadxEvad(x.ctypes.data_as(cytpes.c_void_p), c_size_t(4), y.ctypes.data_as(cytpes.c_void_p))
+.ctypes.data_as(ctypes.c_void_p)

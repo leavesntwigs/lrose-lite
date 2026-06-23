@@ -29,6 +29,3 @@ lroselib.RadxEvad(byref(ii), nGates, byref(div))
 ... 
 4.0 4.0 4.0 0.0 0.0 >>> 
 >>> 
->>> nGates
-4
-
