@@ -69,8 +69,7 @@ MacOS:    $ g++ -dynamiclib -I../lrose/include TestDataPassing.cc -o TestDataPas
 
 Use -l: instead of -l. For example -l:libXYZ.a to link with libXYZ.a. Notice the lib and .a are written out, as opposed to -lXYZ which would auto-expand to libXYZ.so/libXYZ.a.
 
-(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib -I./include RadxEvad.cc ./lib/libtoolsa.a  -o lroselite.dylib
-
+(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib -Wvexing-parse -I./include RadxEvad.cc ./lib/libtoolsa.a ./lib/libphysics.a ./lib/librapmath.a  -o lroselite.dylib
 
 Step 2:
     create binding and compile
@@ -377,7 +376,19 @@ array([4., 4., 4., 1.], dtype=float32)
 array([12., 13., 11.,  1.], dtype=float32)
 >>> 
 
+Use faas environment! 
+mamba activate faas
+(faas) eol-amalfi:RadxEvadF brenda$ python CallRadxEvad.py
 
 
- lroselib.RadxEvad(x.ctypes.data_as(cytpes.c_void_p), c_size_t(4), y.ctypes.data_as(cytpes.c_void_p))
-.ctypes.data_as(ctypes.c_void_p)
+(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib  -I./include RadxEvadMinimal.cc -o lrosemin.dylib
+(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib -Wvexing-parse -I./include RadxEvad.cc ./lib/libtoolsa.a ./lib/libphysics.a ./lib/librapmath.a  -o lroselite.dylib
+
+lrosemin.dylib loads RadxEvad function just fine.
+lroselite.dylib DOES NOT!  Why?  Is the the additional static libraries?? No, not needed.
+lroselite.dylib is working now with this command
+(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib  -I./include RadxEvad.cc ./lib/libtoolsa.a ./lib/libphysics.a ./lib/librapmath.a  -o lroselite.dylib
+(base) eol-amalfi:RadxEvadF brenda$ nm lroselite.dylib  | grep "T _RadxEvad"
+0000000000000648 T _RadxEvad
+
+

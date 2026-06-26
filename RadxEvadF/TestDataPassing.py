@@ -29,3 +29,46 @@ lroselib.RadxEvad(byref(ii), nGates, byref(div))
 ... 
 4.0 4.0 4.0 0.0 0.0 >>> 
 >>> 
+
+This worked!!!
+
+import ctypes 
+import numpy as np
+   
+# load the library ...
+cdll.LoadLibrary("TestDataPassing.dylib")
+lroselib = CDLL("TestDataPassing.dylib")
+
+# set the in and out arrays ...
+>>> x
+array([12., 13., 11.,  1.])
+>>> y = np.array([1.0, 1.0, 1.0, 1.0])
+>>> y
+array([1., 1., 1., 1.])
+>>> x
+array([12., 13., 11.,  1.])
+
+# create a pointer type ...
+>>> c_float_p = ctypes.POINTER(ctypes.c_float)
+
+# make sure the in and out arrays are of the correct type ...
+>>> x
+array([12., 13., 11.,  1.])
+>>> x = x.astype(np.float32)
+>>> y = y.astype(np.float32)
+>>> x
+array([12., 13., 11.,  1.], dtype=float32)
+>>> y
+array([1., 1., 1., 1.], dtype=float32)
+
+# call the C++ library ...
+>>> lroselib.RadxEvad(x.ctypes.data_as(c_float_p), c_size_t(4), y.ctypes.data_as(c_float_p))
+55625936
+
+# notice the changed output array ...
+>>> y
+array([4., 4., 4., 1.], dtype=float32)
+>>> x
+array([12., 13., 11.,  1.], dtype=float32)
+
+
