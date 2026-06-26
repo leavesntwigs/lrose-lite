@@ -391,4 +391,43 @@ lroselite.dylib is working now with this command
 (base) eol-amalfi:RadxEvadF brenda$ nm lroselite.dylib  | grep "T _RadxEvad"
 0000000000000648 T _RadxEvad
 
+testing ...
+(faas) eol-amalfi:RadxEvadF brenda$ python
+Python 3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:24) [Clang 19.1.7 ] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from ctypes import *
+>>> cdll.LoadLibrary("lroselite.dylib")
+<CDLL 'lroselite.dylib', handle 760eaf30 at 0x103df7380>
+>>> lroselite = CDLL("lroselite.dylib")
+>>> lroselite.RadxEvad
+<_FuncPtr object at 0x103a23c50>
+>>> import CallRadxEvad as cre
+
+from ctypes import *
+cdll.LoadLibrary("lroselite.dylib")
+lroselite = CDLL("lroselite.dylib")
+lroselite.RadxEvad
+import CallRadxEvad as cre
+
+
+lroselite.RadxEvad(cre.sweep_index.ctypes.data_as(cre.c_size_t_p),  
+    c_size_t(cre.nsweeps),
+    cre.rays.ctypes.data_as(cre.c_float_p), 
+    c_size_t(cre.nrays),
+    cre.elevs.ctypes.data_as(cre.c_float_p), 
+    cre.azs.ctypes.data_as(cre.c_float_p), 
+    c_size_t(cre.nGates),
+    c_float(cre.startRangeKm),
+    c_float(cre.gateSpacingKm),
+    c_float(cre.radarLatitudeDeg),
+    c_float(cre.radarLongitudeDeg),
+    c_float(cre.radarAltitude),
+    c_float(cre.nyquist),
+    cre.ht.ctypes.data_as(cre.c_float_p),
+    cre.uu.ctypes.data_as(cre.c_float_p),
+    cre.vv.ctypes.data_as(cre.c_float_p),
+    cre.ww.ctypes.data_as(cre.c_float_p),
+    cre.div.ctypes.data_as(cre.c_float_p)
+    )
+
 

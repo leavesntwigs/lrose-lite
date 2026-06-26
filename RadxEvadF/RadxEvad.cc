@@ -1683,6 +1683,7 @@ auto computeSolutionForRing = [&](
  const float nyquist)
 {
 
+  //printf("in computeSolutionForRing\n");
   // load up vel points in azimuth slices
 
   _ring.slices.clear();
@@ -1707,8 +1708,10 @@ auto computeSolutionForRing = [&](
   //const vector<RadxRay *> &rays = _readVol.getRays();
   int ngood = 0;
 
+  //printf("in computeSolutionForRing: 1 nrays=%zu\n", nrays);
   for (size_t iray = 0; iray < nrays; iray++) { 
     
+    //printf("in computeSolutionForRing: 2 iray=%zu\n", iray);
     const float ray = velArray[iray];
 
     // get az
@@ -1759,6 +1762,7 @@ auto computeSolutionForRing = [&](
       if (velArray[igate] == missingVal) {
         continue;
       }
+      //printf("in computeSolutionForRing: 3 igate= %d endGate=%d\n", igate, _ring.endGate);
       double vel = velArray[igate] * cosElev;
       double accept = true;
       //if (censorArray != NULL) {
@@ -1801,12 +1805,14 @@ auto computeSolutionForRing = [&](
 
   // for each slice, compute the median velocity on the azimuth circle
   
+  printf("in computeSolutionForRing: _computeMedianVel\n");
   for (int islice = 0; islice < _nAzSlices; islice++) {
     _computeMedianVel(islice);
   }
   
   // copy median values into gaps
 
+  printf("in computeSolutionForRing: _computeMedianIntoGaps\n");
   _copyMedianIntoGaps();
 
   // identify the 0-isodop points and folding points
@@ -1844,7 +1850,7 @@ auto computeSolutionForRing = [&](
   }
   
   // compute VAD
-
+  printf("in computeSolutionForRing: _computeWindForRing\n");
   _computeWindForRing();
 
   return 0;
@@ -1932,7 +1938,9 @@ auto computeSolutionForRing = [&](
   // const vector<RadxSweep *> &radxSweeps = _readVol.getSweeps();
   //for (size_t isweep = 0; isweep < radxSweeps.size(); isweep++) {
   for (size_t isweep = 0; isweep < nsweeps; isweep++) {
-    
+   
+    printf("isweep = %zu\n", isweep);
+ 
     //const RadxSweep *sweep = radxSweeps[isweep];
     double elev = elevs[isweep]; // sweep->getFixedAngleDeg();
     

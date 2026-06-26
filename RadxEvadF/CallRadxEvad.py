@@ -46,7 +46,7 @@ azs = dt_horizontal['/sweep_0'].azimuth.data
 
 nGates = dt_horizontal['/sweep_0'].dims['range']
 startRangeKm = dt_horizontal['/sweep_0'].range.data[0]
-gateSpacingKm = dt_horizontal['/sweep_0'].range.data[0] - dt_horizontal['/sweep_0'].range.data[0]
+gateSpacingKm = dt_horizontal['/sweep_0'].range.data[1] - dt_horizontal['/sweep_0'].range.data[0]
 radarLatitudeDeg = np.float64(dt_horizontal['/sweep_0'].latitude)
 radarLongitudeDeg = np.float64(dt_horizontal['/sweep_0'].longitude)
 radarAltitude = np.float64(dt_horizontal['/sweep_0'].altitude)
