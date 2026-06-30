@@ -11,7 +11,7 @@ extern "C"
      const size_t *sweep_index, 
      const size_t nsweeps,
      const float *rays, 
-     const size_t nrays,
+     const size_t nrays, // rays per sweep
      const float *elevs, // elevation for each sweep
      const float *azs,   // azimuth for each ray
      size_t  nGates,
@@ -1683,7 +1683,9 @@ auto computeSolutionForRing = [&](
  const float nyquist)
 {
 
-  //printf("in computeSolutionForRing\n");
+  printf("in computeSolutionForRing\n");
+  printf("  velArray = %f %f %f\n", velArray[0], velArray[1], velArray[2]);
+
   // load up vel points in azimuth slices
 
   _ring.slices.clear();
@@ -1757,13 +1759,14 @@ auto computeSolutionForRing = [&](
 
     
     // loop through gates
-    
+    const float *vels = &velArray[iray]; 
     for (int igate = _ring.startGate; igate <= _ring.endGate; igate++) {
-      if (velArray[igate] == missingVal) {
+      if (vels[igate] == missingVal) {
         continue;
       }
-      //printf("in computeSolutionForRing: 3 igate= %d endGate=%d\n", igate, _ring.endGate);
-      double vel = velArray[igate] * cosElev;
+      printf("in computeSolutionForRing: 3 igate= %d endGate=%d\n", igate, _ring.endGate);
+      printf("  vels = %f %f %f\n", vels[0], vels[1], vels[2]);
+      double vel = vels[igate] * cosElev;
       double accept = true;
       //if (censorArray != NULL) {
       //  double censor = censorArray[igate];
@@ -1864,6 +1867,28 @@ auto computeSolutionForRing = [&](
 
 
 //----------- end of lambda functions ------
+
+// HERE!!!!!
+  printf("rays  ...\n");
+  const float *vels = &rays[0];
+  printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
+  vels = &rays[3];
+  printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
+  vels = &rays[6];
+  printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
+  vels = &rays[9];
+  printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
+  vels = &rays[12];
+  printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
+  vels = &rays[15];
+  printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
+  printf("-----\n");
+  for (int i=0; i<nsweeps * nrays * nGates; i++) {
+      printf("%f\n", rays[i]);
+  }
+  printf("\n\n");
+  return;
+
 
 
   _AA = (double **) umalloc2(nFourierCoeff, nFourierCoeff, sizeof(double));
