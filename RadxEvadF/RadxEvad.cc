@@ -1759,13 +1759,13 @@ auto computeSolutionForRing = [&](
 
     
     // loop through gates
-    const float *vels = &velArray[iray]; 
+    const float *vels = &velArray[iray * nGates]; 
     for (int igate = _ring.startGate; igate <= _ring.endGate; igate++) {
       if (vels[igate] == missingVal) {
         continue;
       }
-      printf("in computeSolutionForRing: 3 igate= %d endGate=%d\n", igate, _ring.endGate);
-      printf("  vels = %f %f %f\n", vels[0], vels[1], vels[2]);
+      // printf("in computeSolutionForRing: 3 igate= %d endGate=%d\n", igate, _ring.endGate);
+      // printf("  vels = %f %f %f\n", vels[0], vels[1], vels[2]);
       double vel = vels[igate] * cosElev;
       double accept = true;
       //if (censorArray != NULL) {
@@ -1883,11 +1883,12 @@ auto computeSolutionForRing = [&](
   vels = &rays[15];
   printf(" %f %f %f\n", vels[0], vels[1], vels[2]);
   printf("-----\n");
-  for (int i=0; i<nsweeps * nrays * nGates; i++) {
+  //for (int i=0; i<nsweeps * nrays * nGates; i++) {
+  for (int i=0; i<24; i++) {
       printf("%f\n", rays[i]);
   }
   printf("\n\n");
-  return;
+  // return;
 
 
 

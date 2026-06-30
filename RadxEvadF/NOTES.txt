@@ -392,6 +392,10 @@ lroselite.dylib is working now with this command
 0000000000000648 T _RadxEvad
 
 testing ...
+
+(base) eol-amalfi:RadxEvadF brenda$ g++ -dynamiclib  -I./include RadxEvad.cc ./lib/libtoolsa.a ./lib/libphysics.a ./lib/librapmath.a  -o lroselite.dylib
+
+
 (faas) eol-amalfi:RadxEvadF brenda$ python
 Python 3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:24) [Clang 19.1.7 ] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
@@ -439,604 +443,125 @@ Maybe test RadxEvad (C++) before calling via Python.  Easier to debug the code i
 
 6/29/2026
 
-isweep = 0
-ring at range 0 ... 
- startRange=100
-   endRange=110
- startGate =0
-   endGate =1
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 10, 105
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 10, 105
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 10, 105
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 0
-  rangeNum: 0
-  startGate: 0
-  endGate: 1
-  elev: 10
-  elevStar: 10.3525
-  elevCoeff: 3.47958e-06
-  midHt: 18.8791
-  startRange: 100
-  endRange: 110
-  midRange: 105
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 1 ... 
- startRange=110
-   endRange=120
- startGate =1
-   endGate =2
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 10, 115
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 10, 115
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 10, 115
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 0
-  rangeNum: 1
-  startGate: 1
-  endGate: 2
-  elev: 10
-  elevStar: 10.3861
-  elevCoeff: 3.18754e-06
-  midHt: 20.7445
-  startRange: 110
-  endRange: 120
-  midRange: 115
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 2 ... 
- startRange=120
-   endRange=130
- startGate =2
-   endGate =3
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 10, 125
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 10, 125
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 10, 125
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 0
-  rangeNum: 2
-  startGate: 2
-  endGate: 3
-  elev: 10
-  elevStar: 10.4197
-  elevCoeff: 2.94223e-06
-  midHt: 22.6216
-  startRange: 120
-  endRange: 130
-  midRange: 125
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 3 ... 
- startRange=130
-   endRange=140
- startGate =3
-   endGate =4
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 10, 135
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 10, 135
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 10, 135
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 0
-  rangeNum: 3
-  startGate: 3
-  endGate: 4
-  elev: 10
-  elevStar: 10.4532
-  elevCoeff: 2.73326e-06
-  midHt: 24.5104
-  startRange: 130
-  endRange: 140
-  midRange: 135
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 4 ... 
- startRange=140
-   endRange=150
- startGate =4
-   endGate =4
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 10, 145
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 10, 145
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 10, 145
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 0
-  rangeNum: 4
-  startGate: 4
-  endGate: 4
-  elev: 10
-  elevStar: 10.4868
-  elevCoeff: 2.55312e-06
-  midHt: 26.411
-  startRange: 140
-  endRange: 150
-  midRange: 145
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-isweep = 1
-ring at range 0 ... 
- startRange=100
-   endRange=110
- startGate =0
-   endGate =1
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 20, 105
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 20, 105
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 20, 105
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 1
-  rangeNum: 0
-  startGate: 0
-  endGate: 1
-  elev: 20
-  elevStar: 20.3525
-  elevCoeff: 7.06578e-06
-  midHt: 36.5581
-  startRange: 100
-  endRange: 110
-  midRange: 105
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 1 ... 
- startRange=110
-   endRange=120
- startGate =1
-   endGate =2
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 20, 115
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 20, 115
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 20, 115
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 1
-  rangeNum: 1
-  startGate: 1
-  endGate: 2
-  elev: 20
-  elevStar: 20.3861
-  elevCoeff: 6.46296e-06
-  midHt: 40.1072
-  startRange: 110
-  endRange: 120
-  midRange: 115
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 2 ... 
- startRange=120
-   endRange=130
- startGate =2
-   endGate =3
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 20, 125
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 20, 125
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 20, 125
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 1
-  rangeNum: 2
-  startGate: 2
-  endGate: 3
-  elev: 20
-  elevStar: 20.4197
-  elevCoeff: 5.9566e-06
-  midHt: 43.6681
-  startRange: 120
-  endRange: 130
-  midRange: 125
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 3 ... 
- startRange=130
-   endRange=140
- startGate =3
-   endGate =4
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 20, 135
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 20, 135
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 20, 135
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 1
-  rangeNum: 3
-  startGate: 3
-  endGate: 4
-  elev: 20
-  elevStar: 20.4532
-  elevCoeff: 5.52525e-06
-  midHt: 47.2406
-  startRange: 130
-  endRange: 140
-  midRange: 135
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-ring at range 4 ... 
- startRange=140
-   endRange=150
- startGate =4
-   endGate =4
-in computeSolutionForRing
-  velArray = 1.000000 1.000000 1.000000
-in computeSolutionForRing: _computeMedianVel
-in computeSolutionForRing: _computeMedianIntoGaps
--->> no unfolding needed - no folds found
-in computeSolutionForRing: _computeWindForRing
-==>> VARIANCE: 9999
-==>> RMS ERROR: 99
-Ring invalid, elev, minRange: 20, 145
-  max to/from direction error: 45
-  actual to/from error: 180
-Ring invalid, elev, minRange: 20, 145
-  max rms error allowed: 3
-  actual rms error: 99
-Ring invalid, elev, minRange: 20, 145
-  max missing sector size: 90
-  max missing slices: 45
-  n missing slices: 177
-====>> RING RESULTS INVALID <<====
-==================== results  for ring ========================
-  sweepNum: 1
-  rangeNum: 4
-  startGate: 4
-  endGate: 4
-  elev: 20
-  elevStar: 20.4868
-  elevCoeff: 5.15341e-06
-  midHt: 50.8249
-  startRange: 140
-  endRange: 150
-  midRange: 145
-  fitVariance: 9999
-  fitRmsError: 99
-  maxVr: 4.1354e-314
-  minVr: 4.1354e-314
-  azForMaxVr: 2
-  azForMinVr: 2
-  azError: 180
-  windSpeed: 0
-  windDirn: 92
-  windValid: 0
-  aa: nan nan nan nan nan nan nan
-  aaVariance: nan nan nan nan nan nan nan
-  YY: nan
-===============================================================
-========= Sorted raw wind profile ===========
-=============================================
-1796231800
->>> cre.ht
-array([0., 0.], dtype=float32)
->>> cre.uu
-array([0., 0.], dtype=float32)
->>> 
+6/30/2026
 
-
-WHOA! look at this ...
-in computeSolutionForRing
-  velArray = -0.003450 2.948338 543527787253570314081728408322048.000000
-                                ^^^ This value is way off!  Is there a dispute between float32 and float 64???
-
-
-rays = np.random.rand(nsweeps * nrays, nGates)
-rays[0] = [ 0, 1, 2]
-rays[1] = [10,11,12]
-rays[2] = [20,21,22]
-rays[3] = [30,31,32]
-rays[4] = [40,41,42]
-rays[5] = [50,51,52]
-rays[6] = [60,61,62]
-rays[7] = [70,71,72]
-
-nrays = total number of rays
-nAz = number of az per sweep = nrays per sweep
-
----------
-
-this worked ...
->>> con4 = np.ones((8,3), dtype=np.float32)
->>> con4
-array([[1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.]], dtype=float32)
->>> con4[2][1] = 8
->>> con4
-array([[1., 1., 1.],
-       [1., 1., 1.],
-       [1., 8., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.],
-       [1., 1., 1.]], dtype=float32)
->>> lroselite.RadxEvad(cre.sweep_index.ctypes.data_as(cre.c_size_t_p), 
-...     c_size_t(cre.nsweeps),
-...     con4.ctypes.data_as(cre.c_float_p),
-...     c_size_t(24),
-...     cre.elevs.ctypes.data_as(cre.c_float_p),
-...     cre.azs.ctypes.data_as(cre.c_float_p),
-...     c_size_t(cre.nGates),
-...     c_float(cre.startRangeKm),
-...     c_float(cre.gateSpacingKm),
-...     c_float(cre.radarLatitudeDeg),
-...     c_float(cre.radarLongitudeDeg),
-...     c_float(cre.radarAltitude),
-...     c_float(cre.nyquist),
-...     cre.ht.ctypes.data_as(cre.c_float_p),
-...     cre.uu.ctypes.data_as(cre.c_float_p),
-...     cre.vv.ctypes.data_as(cre.c_float_p),
-...     cre.ww.ctypes.data_as(cre.c_float_p),
-...     cre.div.ctypes.data_as(cre.c_float_p)
-...     )
+expected results from TestDataRadxEvad.py
+rays  ...
+ 0.000000 1.000000 2.000000
+ 10.000000 11.000000 12.000000
+ 20.000000 21.000000 22.000000
+ 30.000000 31.000000 32.000000
+ 40.000000 41.000000 42.000000
+ 50.000000 51.000000 52.000000
 -----
+0.000000
 1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-8.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
-1.000000
+2.000000
+10.000000
+11.000000
+12.000000
+20.000000
+21.000000
+22.000000
+30.000000
+31.000000
+32.000000
+40.000000
+41.000000
+42.000000
+50.000000
+51.000000
+52.000000
+60.000000
+61.000000
+62.000000
+70.000000
+71.000000
+72.000000
+
+------------
+
+testing with real data ..
+rays  ...
+ -36893488147419103232.000000 -1.475231 2.000000
+ -1.969253 -0.000000 -1.903464
+ -0.000000 -1.865840 2.000000
+ -1.858330 -0.000000 -1.813570
+ -0.000000 -1.975261 -0.000000
+ -1.955434 36893488147419103232.000000 -2.045255
+            ^^^^^^ note this value!!! is the nrays correct???
+-----
+-36893488147419103232.000000
+-1.475231
+2.000000
+-1.969253
+-0.000000
+-1.903464
+-0.000000
+-1.865840
+2.000000
+-1.858330
+-0.000000
+-1.813570
+-0.000000
+-1.975261
+-0.000000
+
+-----------
+
+changed to dtype=np.float32 and now the rays are ...
+rays  ...
+ -0.112616 -1.754023 -1.227715
+ -0.963360 -0.933319 -0.754278
+ -1.802087 -1.643474 -2.362040
+ -2.408903 -1.617039 -2.702098
+ -2.780203 -3.210381 -2.986881
+ -3.330543 -3.293293 -2.873929
+-----
+-0.112616
+-1.754023
+-1.227715
+-0.963360
+-0.933319
+-0.754278
+-1.802087
+-1.643474
+-2.362040
+-2.408903
+-1.617039
+-2.702098
+-2.780203
+-3.210381
+-2.986881
+-3.330543
+-3.293293
+-2.873929
+-2.632404
+-2.828267
+-2.972461
+-2.891953
+-3.248833
+-2.377661
+
+This looks much better!!!
+
+No more segmentation fault, but no wind profiles produced;
+all RING RESULTS INVALID !!!
+
+in computeSolutionForRing: _computeWindForRing
+==>> VARIANCE: nan                   <<<<<===== I wonder if I need to get rid of nans?
+==>> RMS ERROR: nan
+Ring invalid, elev, minRange: 80, 299700
+  max to/from direction error: 45
+  actual to/from error: 180          <<<<<==== Why is this always 180?
+====>> RING RESULTS INVALID <<====
 
 
-1809551992
+in computeSolutionForRing: _computeWindForRing
+==>> VARIANCE: nan
+==>> RMS ERROR: nan
+Ring invalid, elev, minRange: 80, 299850
+  max to/from direction error: 45
+  actual to/from error: 180
+====>> RING RESULTS INVALID <<====
+

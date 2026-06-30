@@ -52,28 +52,33 @@ radarLongitudeDeg = np.float64(dt_horizontal['/sweep_0'].longitude)
 radarAltitude = np.float64(dt_horizontal['/sweep_0'].altitude)
 nyquist = 0.0
 
-nrays = dt_horizontal['/sweep_0'].dims['azimuth'] * nsweeps  #  nrays is total size of all rays
+nrays = dt_horizontal['/sweep_0'].dims['azimuth']    #  nrays is number of rays per sweep
 print("nrays = ", nrays)
 
 isweep = 0
 sweep_index = np.empty([nsweeps])
-# a = np.empty([nsweeps*nrays,nGates])          # velocity data: [all_rays, nGates] =  [nsweeps*nrays, nGates]
-a = np.empty([nrays,nGates])          # velocity data: [all_rays, nGates] =  [nsweeps*nrays, nGates]
+a = np.empty((nsweeps*nrays,nGates), dtype=np.float32)          # velocity data: [all_rays, nGates] =  [nsweeps*nrays, nGates]
+# a = np.empty([nrays,nGates])          # velocity data: [all_rays, nGates] =  [nsweeps*nrays, nGates]
 nAz = azs.size
 
 print("rays shape = ", a.shape)
 # elevs = np.empty ?? or c_float ?? (nsweeps * c_float)  HERE!!!! need to define elevs somehow !!!!
 elevs = np.ones(4, dtype=np.float32)   # TODO fix this
+elevs[0] = 10.0
+elevs[1] = 20.0
+elevs[2] = 40.0
+elevs[3] = 80.0
 
 for group in dt_horizontal.match("/sweep_*"):
     # WORKING HERE ... do I need to_dataset?
     # sweep0ds = dt_horizontal['/sweep_0'].to_dataset()
     print(f"Node Name: {group}")
     # a[isweep*nrays:isweep*nrays+nrays] = dt_horizontal[group]["VEL"].data
+    print(f"filling a[{isweep*nAz} : {isweep*nAz+nAz},:]")
     a[isweep*nAz:isweep*nAz+nAz,:] = dt_horizontal[group]["VEL"].data
     # mya[isweep*nrays:isweep*nrays+nrays,:]  HERE!!
     if (isweep > 0):
-        sweep_index[isweep] = sweep_index[isweep-1] + dt_horizontal[group].azimuth.size
+        sweep_index[isweep] = sweep_index[isweep-1] +  nAz  # dt_horizontal[group].azimuth.size
         # elevs[isweep] = dt_horizontal[group].elevation??  # not currently working
     isweep += 1
 
