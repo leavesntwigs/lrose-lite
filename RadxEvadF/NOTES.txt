@@ -433,7 +433,10 @@ lroselite.RadxEvad(cre.sweep_index.ctypes.data_as(cre.c_size_t_p),
     cre.uu.ctypes.data_as(cre.c_float_p),
     cre.vv.ctypes.data_as(cre.c_float_p),
     cre.ww.ctypes.data_as(cre.c_float_p),
-    cre.div.ctypes.data_as(cre.c_float_p)
+    cre.div.ctypes.data_as(cre.c_float_p),
+    c_float(cre.profile_max_height),
+    c_float(cre.profile_min_height),
+    c_float(cre.profile_height_interval)
     )
 
 

@@ -653,7 +653,7 @@ auto _loadProfile = [&]()
 
   sort(_profile.raw.begin(), _profile.raw.end(), ProfilePtCompare());
 
-  if (_params_debug >= Params_DEBUG_VERBOSE) {
+  if (0) { // _params_debug >= Params_DEBUG_VERBOSE) {
     fprintf(stderr, "========= Sorted raw wind profile ===========\n");
     for (int ii = 0; ii < (int) _profile.raw.size(); ii++) {
       const ProfilePt &pt = _profile.raw[ii];
@@ -1925,6 +1925,8 @@ auto computeSolutionForRing = [&](
   _profileMaxHt = profile_max_height;
   _profileDeltaHt = profile_height_interval;
   _profileNLevels = (int) ((_profileMaxHt - _profileMinHt) / _profileDeltaHt) + 1;
+  printf("min, max, delta = %f %f %f\n", _profileMinHt, _profileMaxHt, _profileDeltaHt);
+  printf("_profileNLevels = %d\n", _profileNLevels);
 
   if (_profileNLevels < 1) {
     cerr << "  Bad vertical geometry." << endl;
@@ -2132,6 +2134,8 @@ auto computeSolutionForRing = [&](
 
   // ...HERE 
   int nZ = _profileNLevels;
+  printf("nZ = %d\n", nZ);
+
   // 
   // TaArray<float> ht_;
   // TaArray<float> uu_;
@@ -2154,6 +2158,9 @@ auto computeSolutionForRing = [&](
       div[iz] = pt.div;
     } else {
       div[iz] = pt.div * 1.0e5;
+    }
+    if (iz < 10) {
+      printf("%5.3f %8.2f %8.2f %8.2f %8.2f\n", pt.ht, pt.uu, pt.vv, pt.ww, div[iz]);
     }
   }
 

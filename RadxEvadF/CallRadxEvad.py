@@ -145,11 +145,37 @@ sweep_index = sweep_index.astype(np.uintp)
 #    div.ctypes.data_as(c_float_p),
 #    )
 ### 55625936
-##
-### notice the changed output array ...
-##ht
-### array([4., 4., 4., 1.], dtype=float32)
-##uu
-### array([12., 13., 11.,  1.], dtype=float32)
-##
-##
+
+#
+#lroselite.RadxEvad(cre.sweep_index.ctypes.data_as(cre.c_size_t_p),
+#    c_size_t(cre.nsweeps),
+#    cre.rays.ctypes.data_as(cre.c_float_p),
+#    c_size_t(cre.nrays),
+#    cre.elevs.ctypes.data_as(cre.c_float_p),
+#    cre.azs.ctypes.data_as(cre.c_float_p),
+#    c_size_t(cre.nGates),
+#    c_float(cre.startRangeKm),
+#    c_float(cre.gateSpacingKm),
+#    c_float(cre.radarLatitudeDeg),
+#    c_float(cre.radarLongitudeDeg),
+#    c_float(cre.radarAltitude),
+#    c_float(cre.nyquist),
+#    cre.ht.ctypes.data_as(cre.c_float_p),
+#    cre.uu.ctypes.data_as(cre.c_float_p),
+#    cre.vv.ctypes.data_as(cre.c_float_p),
+#    cre.ww.ctypes.data_as(cre.c_float_p),
+#    cre.div.ctypes.data_as(cre.c_float_p),
+#    c_float(cre.profile_max_height),
+#    c_float(cre.profile_min_height),
+#    c_float(cre.profile_height_interval)
+#    )
+#
+#
+###
+#### notice the changed output array ...
+###ht
+#### array([4., 4., 4., 1.], dtype=float32)
+###uu
+#### array([12., 13., 11.,  1.], dtype=float32)
+###
+###
