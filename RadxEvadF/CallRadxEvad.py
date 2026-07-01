@@ -79,18 +79,30 @@ for group in dt_horizontal.match("/sweep_*"):
     # mya[isweep*nrays:isweep*nrays+nrays,:]  HERE!!
     if (isweep > 0):
         sweep_index[isweep] = sweep_index[isweep-1] +  nAz  # dt_horizontal[group].azimuth.size
-        # elevs[isweep] = dt_horizontal[group].elevation??  # not currently working
+    elevs[isweep] = dt_horizontal[group]["elevation"][0].item()
+    # dt_horizontal[group].elevation??  # not currently working
     isweep += 1
 
 # really, rays is better named velocity, because it is the velocity data for all sweeps, for all azimuths/rays, for all gates/ranges
-rays = a  # need a flat structure of all the rays for all the sweeps for all the ranges/gates
+# rays = a  # need a flat structure of all the rays for all the sweeps for all the ranges/gates
+
+# subsitute missing value for nans
+rays = np.nan_to_num(a, copy=False, nan=-9999.0)
+
+# use default for these ...
+profile_max_height = 20.0
+profile_min_height = 0.5
+profile_height_interval = 0.5
+
+nZ = (int) ((profile_max_height - profile_min_height) / profile_height_interval) + 1
+
 
 #  uu,vv are calculated for each elevation and one elevation per sweep
-ht = np.zeros(nsweeps, dtype=np.float32) # initialize to all zeros
-uu = np.zeros(nsweeps, dtype=np.float32) # initialize to all zeros
-vv = np.zeros(nsweeps, dtype=np.float32) # initialize to all zeros
-ww = np.zeros(nsweeps, dtype=np.float32) # initialize to all zeros
-div = np.zeros(nsweeps, dtype=np.float32) # initialize to all zeros
+ht = np.zeros(nZ, dtype=np.float32) # initialize to all zeros
+uu = np.zeros(nZ, dtype=np.float32) # initialize to all zeros
+vv = np.zeros(nZ, dtype=np.float32) # initialize to all zeros
+ww = np.zeros(nZ, dtype=np.float32) # initialize to all zeros
+div = np.zeros(nZ, dtype=np.float32) # initialize to all zeros
 
 # create a pointer type ...
 c_float_p = ctypes.POINTER(ctypes.c_float)

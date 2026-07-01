@@ -565,3 +565,27 @@ Ring invalid, elev, minRange: 80, 299850
   actual to/from error: 180
 ====>> RING RESULTS INVALID <<====
 
+
+rays_missing = np.nan_to_num(cre.rays, copy=False, nan=-9999.0)
+
+
+HOW TO elevs 
+
+>>> cre.dt_horizontal["/sweep_1"]["elevation"][0].item()
+0.9997711181640625
+
+>>> cre.dt_horizontal["/sweep_3"]["elevation"][0].data
+array(1.9995422, dtype=float32)
+>>> cre.dt_horizontal["/sweep_3"]["elevation"][1].data
+array(1.9995422, dtype=float32)
+>>> cre.dt_horizontal["/sweep_2"]["elevation"][1].data
+array(1.4941634, dtype=float32)
+>>> cre.dt_horizontal["/sweep_1"]["elevation"][1].data
+array(0.9997711, dtype=float32)
+>>> cre.dt_horizontal["/sweep_1"]["elevation"][0].data
+array(0.9997711, dtype=float32)
+
+VARIANCE & RMS ERROR are nan, because sumSqDiff is nan, because slice.modelVel is nan, because _aa is nan.
+
+I changed the max_to... parameter to 180 from 45 and then there was output, but the dimensions of ht, uu, vv, ... are more than the # of sweeps.
+

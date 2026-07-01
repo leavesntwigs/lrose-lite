@@ -4,6 +4,7 @@
 // slice and dice the data in python
 // only send what is needed
 // deal with missing data in python
+// dimension of ht, uu, vv, ww, div = (int) ((profile_max_height - profile_min_height) / profile_height_interval) + 1
 
 extern "C" 
 {
@@ -25,7 +26,10 @@ extern "C"
      float *uu, 
      float *vv, 
      float *ww, 
-     float *div
+     float *div,
+     float profile_max_height,
+     float profile_min_height,
+     float profile_height_interval
     );
 }
 
@@ -74,7 +78,10 @@ void RadxEvad (
  float *uu,
  float *vv,
  float *ww,
- float *div
+ float *div,
+ float profile_max_height = 20.0,
+ float profile_min_height = 0.5,
+ float profile_height_interval = 0.5
 ) 
 {
 
@@ -203,7 +210,8 @@ void RadxEvad (
   int _params_slice_delta_azimuth = 2;
   int _params_min_vel_values_per_slice = 3;
   int _params_n_slices_for_vel_median = 5;
-  int _params_max_to_from_direction_error = 45;
+  // int _params_max_to_from_direction_error = 45;
+  int _params_max_to_from_direction_error = 182;
   int _params_max_fit_rms_error = 3; 
   int _params_max_missing_sector_size = 90;
 
@@ -1415,6 +1423,8 @@ auto _computeWindForRing = [&]()
   } // islice
   double variance = 9999;
   double rms = 99;
+  printf("count = %f, nFourierCoeff = %d, sumSqDiff = %f\n", count, nFourierCoeff, sumSqDiff);
+
   if (count > nFourierCoeff) {
     variance = sumSqDiff / (count - nFourierCoeff);
     rms = sqrt(variance);
@@ -1911,9 +1921,9 @@ auto computeSolutionForRing = [&](
   _sliceDeltaAz = 360.0 / _nAzSlices;
 
   // profile geometry
-  _profileMinHt = elevs[0];         // _params_profile_min_height;
-  _profileMaxHt = elevs[nsweeps-1]; // _params_profile_max_height;
-  _profileDeltaHt = 0.5;          //_params_profile_height_interval;
+  _profileMinHt = profile_min_height;
+  _profileMaxHt = profile_max_height;
+  _profileDeltaHt = profile_height_interval;
   _profileNLevels = (int) ((_profileMaxHt - _profileMinHt) / _profileDeltaHt) + 1;
 
   if (_profileNLevels < 1) {
@@ -2118,6 +2128,35 @@ auto computeSolutionForRing = [&](
     }
     fprintf(stderr, "=============================================\n");
   }
+
+
+  // ...HERE 
+  int nZ = _profileNLevels;
+  // 
+  // TaArray<float> ht_;
+  // TaArray<float> uu_;
+  // TaArray<float> vv_;
+  // TaArray<float> ww_;
+  // TaArray<float> div_;
+  // float *ht = ht_.alloc(nZ);
+  // float *uu = uu_.alloc(nZ);
+  // float *vv = vv_.alloc(nZ);
+  // float *ww = ww_.alloc(nZ);
+  // float *div = div_.alloc(nZ);
+
+  for (int iz = 0; iz < nZ; iz++) {
+    const ProfilePt &pt = _profile.interp[iz];
+    ht[iz] = pt.ht;
+    uu[iz] = pt.uu;
+    vv[iz] = pt.vv;
+    ww[iz] = pt.ww;
+    if (pt.div == missingVal) {
+      div[iz] = pt.div;
+    } else {
+      div[iz] = pt.div * 1.0e5;
+    }
+  }
+
 
 };
 
